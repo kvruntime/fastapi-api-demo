@@ -1,5 +1,16 @@
 # Commands-API
 
+## Description
+
+this command-api is training on API with fastAPI
+
+## Technology
+
+- Pyhton
+- FastAPI
+- Tortoise-ORM
+- Aerich
+
 ## aerich
 
 ```pwsh
