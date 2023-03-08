@@ -3,9 +3,11 @@ from pydantic import BaseModel
 
 class CreateCommandDto(BaseModel):
     os: str
-    description:str = ""
+    description: str = ""
     args: str
 
 
-class UpdateCommandDto(CreateCommandDto):
-    pass
+class UpdateCommandDto(BaseModel):
+    os: str | None
+    description: str | None
+    args: str | None

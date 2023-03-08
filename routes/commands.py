@@ -55,10 +55,25 @@ async def put_command(id: UUID, command: UpdateCommandDto):
         )
 
 
+@command_router.patch("/{id}")
+async def patch_command(id: UUID, command: UpdateCommandDto):
+    try:
+        _item = await command_repo.read(id)
+        await _item.update_from_dict(command.dict(exclude_unset=True, exclude_defaults=True))
+        await command_repo.save(_item)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except DoesNotExist:
+        return Response(
+            content=f"Command with id:{id} not found",
+            status_code=status.HTTP_404_NOT_FOUND
+        )
+
+
 @command_router.post("/")
 async def post_command(request: Request, command: CreateCommandDto):
     _item = await command_repo.insert(Command(**command.dict()))
     return RedirectResponse(
         request.url_for("get_command", **dict(id=_item.id)),
-        status_code=status.HTTP_201_CREATED
+        status_code=status.HTTP_303_SEE_OTHER
+        # without 303, this wont go to the specified route
     )
