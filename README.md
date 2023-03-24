@@ -24,3 +24,11 @@ aerich migrate --name "initial"
 ## Visualisation
 
 ![image](./public/screenshot/api-screenshot.png)
+
+## How run
+
+```sh
+docker-compose up -d api-db
+
+python .
+```
