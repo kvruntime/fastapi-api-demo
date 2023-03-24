@@ -1,9 +1,10 @@
+from typing import List
 from uuid import UUID
 from fastapi import APIRouter, Request, status
 from dbdomain.models import Command
-from dtos.commanddtos import CreateCommandDto, UpdateCommandDto
+from dtos.commanddtos import CreateCommandDto, UpdateCommandDto, ReadCommandDto
 from shared.commonrepo import CommonRepo
-from fastapi.responses import RedirectResponse, Response
+from fastapi.responses import RedirectResponse, Response, JSONResponse
 from tortoise.exceptions import DoesNotExist
 
 command_repo = CommonRepo[Command](Command)
@@ -11,15 +12,17 @@ command_repo = CommonRepo[Command](Command)
 command_router = APIRouter(prefix="/api/commands", tags=["Commands"])
 
 
-@command_router.get("/")
+@command_router.get("/", response_model=List[ReadCommandDto], status_code=status.HTTP_200_OK)
 async def get_commands():
-    return await command_repo.read_all()
+    _items = await command_repo.read_all()
+    return _items
 
 
-@command_router.get("/{id}")
+@command_router.get("/{id}", response_model=ReadCommandDto, status_code=status.HTTP_200_OK)
 async def get_command(id: UUID):
     try:
-        return await command_repo.read(id)
+        _item = await command_repo.read(id)
+        return _item
     except DoesNotExist:
         return Response(
             content=f"Command with id:{id} not found",
@@ -34,7 +37,7 @@ async def delete_command(id: UUID):
     except DoesNotExist:
         return Response(
             content=f"Command with id:{id} not found",
-            status_code=status.HTTP_404_NOT_FOUND
+            status_code=status.HTTP_400_BAD_REQUEST
         )
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -47,7 +50,7 @@ async def put_command(id: UUID, command: UpdateCommandDto):
         _item = await command_repo.read(id)
         await _item.update_from_dict(command.dict(exclude_unset=True))
         await command_repo.save(_item)
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
+        return Response(content="updated", status_code=status.HTTP_204_NO_CONTENT)
     except DoesNotExist:
         return Response(
             content=f"Command with id:{id} not found",
@@ -71,9 +74,12 @@ async def patch_command(id: UUID, command: UpdateCommandDto):
 
 @command_router.post("/")
 async def post_command(request: Request, command: CreateCommandDto):
-    _item = await command_repo.insert(Command(**command.dict()))
-    return RedirectResponse(
-        request.url_for("get_command", **dict(id=_item.id)),
-        status_code=status.HTTP_303_SEE_OTHER
-        # without 303, this wont go to the specified route
-    )
+    try:
+        _item = await command_repo.insert(Command(**command.dict()))
+        return RedirectResponse(
+            request.url_for("get_command", **dict(id=_item.id)),
+            status_code=status.HTTP_303_SEE_OTHER
+            # without 303, this wont go to the specified route
+        )
+    except:
+        return Response(content="Invalid credential", status_code=status.HTTP_400_BAD_REQUEST)

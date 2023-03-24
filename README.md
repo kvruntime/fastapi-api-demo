@@ -20,3 +20,7 @@ aerich --app app_name init-db
 
 aerich migrate --name "initial"
 ```
+
+## Visualisation
+
+![image](./public/screenshot/api-screenshot.png)
