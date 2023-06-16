@@ -13,17 +13,23 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  
+  id String @default(dbgenerated("gen_random_uuid()"))  @unique
 
   email String @unique
 
-  name String?
+  name        String?
+  nickname    String?
+  phone       String?
+  is_verified Boolean   @default(false)
+  photo_url   String?
+  birth_date  DateTime?
 
   posts Post[]
 }
 
 model Post {
-  id Int @id @default(autoincrement())
+  id String @default(dbgenerated("gen_random_uuid()"))  @unique
 
   title String
 
@@ -31,7 +37,9 @@ model Post {
 
   published Boolean @default(false)
 
-  author User @relation(fields: [authorId], references: [id])
+  author_id String @unique
 
-  authorId Int @unique
+  author User @relation(fields: [author_id], references: [id])
+
+  updated_at DateTime @updatedAt()
 }
