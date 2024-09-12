@@ -1,0 +1,36 @@
+{
+  "name": "fastapi",
+  "dockerComposeFile":["./docker-compose.yml"],
+  "service": "fastapi",
+  "workspaceFolder": "/workspaces/fastapi",
+  "shutdownAction": "none",
+  "postCreateCommand": "pip install -r requirements.txt",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker",
+        "mhutchie.git-graph",
+        "sorbet.sorbet-vscode-extension",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "Prisma.prisma",
+        "KevinRose.vsc-python-indent"
+      ]
+    }
+  },
+  "mounts": [
+    "type=bind,source=${localEnv:HOME}/.ssh,target=/root/.ssh,readonly"
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "ppa": true,
+      "version": "latest"
+    },
+    "ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
+      "setLocale": true,
+      "theme": "robbyrussell",
+      "plugins": "git docker",
+      "desiredLocale": "en_US.UTF-8 UTF-8"
+    }
+  }
+}

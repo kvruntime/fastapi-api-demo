@@ -3,7 +3,6 @@ import typing
 from fastapi import APIRouter, Form
 from pydantic import EmailStr
 
-
 oauth_router = APIRouter(prefix="/api/oauth", tags=["OAuth"])
 
 

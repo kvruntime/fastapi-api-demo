@@ -11,24 +11,35 @@ this command-api is training on API with fastAPI
 - Tortoise-ORM
 - Aerich
 
-## aerich
 
-```pwsh
-aerich init -t path.DB_CONFIG
+## Before run the application
 
-aerich --app app_name init-db
+Install requirements
 
-aerich migrate --name "initial"
+```bash
+  pip install -r requirements.txt
 ```
 
-## Visualisation
+Generate prisma client
 
-![image](./public/screenshot/api-screenshot.png)
+```bash
+  prisma generate
+```
+
+Check & run migrations
+
+```bash
+    prisma migrate dev
+    prisma db push
+```
+
+
+
 
 ## How run
 
-```sh
-docker-compose up -d api-db
+Ensure postgres database instance is avalaible and accessible.
 
-python .
+```sh
+  fastapi dev --host=0.0.0.0
 ```

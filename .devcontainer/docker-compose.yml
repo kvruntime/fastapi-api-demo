@@ -1,0 +1,22 @@
+networks:
+  dockernet:
+    external: true
+
+services:
+  fastapi:
+    image: python:3.10-bullseye
+    command: sleep infinity
+    networks:
+      - dockernet
+    volumes:
+      - ../:/workspaces/fastapi
+    env_file:
+      - ../.env
+  pgsql:
+    image: postgres:16-alpine
+    networks:
+      - dockernet
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
