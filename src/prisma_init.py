@@ -5,8 +5,9 @@ from contextlib import asynccontextmanager
 
 prisma_client = Prisma(auto_register=True)
 
+
 @asynccontextmanager
-async def api_lifespan(app:FastAPI):
+async def api_lifespan(app: FastAPI):
     await prisma_client.connect()
     yield
     await prisma_client.disconnect()

@@ -41,5 +41,5 @@ Check & run migrations
 Ensure postgres database instance is avalaible and accessible.
 
 ```sh
-  fastapi dev --host=0.0.0.0
+  cd src/ && fastapi dev --host=0.0.0.0
 ```

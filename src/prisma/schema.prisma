@@ -25,7 +25,7 @@ model User {
   photo_url   String?
   birth_date  DateTime?
 
-  posts Post[]
+  // posts Post[]
 }
 
 model Post {
@@ -37,9 +37,9 @@ model Post {
 
   published Boolean @default(false)
 
-  author_id String @unique
+  // author_id String @unique
 
-  author User @relation(fields: [author_id], references: [id])
+  // author User @relation(fields: [author_id], references: [id])
 
   updated_at DateTime @updatedAt()
 }

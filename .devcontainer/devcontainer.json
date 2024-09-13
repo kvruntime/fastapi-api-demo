@@ -14,7 +14,8 @@
         "sorbet.sorbet-vscode-extension",
         "VisualStudioExptTeam.vscodeintellicode",
         "Prisma.prisma",
-        "KevinRose.vsc-python-indent"
+        "KevinRose.vsc-python-indent",
+        "charliermarsh.ruff"
       ]
     }
   },
